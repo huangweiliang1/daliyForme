@@ -678,18 +678,39 @@ body {
   background-color: var(--text-secondary);
 }
 
-/* 响应式设计 */
+/* 移动端优化样式 - 基础设置 */
+:root {
+  /* 移动端特定变量 */
+  --mobile-safe-area: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* 基础触摸优化 */
+button, .btn, .tab-button, .stat-item {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 响应式设计 - 平板和大屏手机 */
 @media (max-width: 768px) {
   body {
     padding: 10px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   .container {
     min-height: calc(100vh - 20px);
+    border-radius: 16px;
   }
   
   .app-header {
     padding: 1.25rem 1rem;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  
+  .app-title h1 {
+    font-size: 1.6rem;
   }
   
   .header-stats {
@@ -698,33 +719,102 @@ body {
   
   .stat-item {
     min-width: 100px;
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
   }
   
   .stat-value {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
   
   .main-content {
     padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
   
+  /* 改进的标签导航 */
   .tabs {
+    background-color: rgba(241, 245, 249, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem;
+    border-radius: 16px;
+    margin-bottom: 1.25rem;
     flex-wrap: wrap;
   }
   
   .tab-button {
-    padding: 0.75rem;
+    padding: 0.875rem 1rem;
     font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 12px;
+    min-height: 48px;
+  }
+  
+  .tab-button.active {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    position: relative;
+  }
+  
+  .tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 15%;
+    width: 70%;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+  }
+  
+  .card {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
   
   .card-header {
-    padding: 1rem;
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--border-color);
   }
   
   .card-body {
-    padding: 1rem;
+    padding: 1.25rem 1rem;
+    flex: 1;
+  }
+  
+  /* 表单元素优化 */
+  .form-control {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    border-width: 1.5px;
+  }
+  
+  .input-wrapper .form-control {
+    padding-left: 3.25rem;
+  }
+  
+  .search-wrapper .form-control {
+    padding-right: 3.25rem;
+  }
+  
+  .input-icon {
+    font-size: 1rem;
+  }
+  
+  /* 按钮优化 */
+  .btn {
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    min-height: 50px;
+    font-weight: 600;
   }
   
   .search-container {
@@ -732,19 +822,64 @@ body {
   }
   
   .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+  }
+  
+  .stat-card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+  
+  .chart-container {
+    border-radius: 16px;
+    padding: 1.25rem;
   }
   
   .actions {
     flex-direction: column;
+    gap: 0.75rem;
   }
   
   .actions .btn {
     width: 100%;
+    padding: 0.875rem 1rem;
+  }
+  
+  /* 条目样式优化 */
+  .entry-item, .search-result-item {
+    border-radius: 12px;
+    padding: 1.125rem;
+    margin-bottom: 0.875rem;
+  }
+  
+  .btn-delete {
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 
+/* 移动端优化 - 小屏手机 */
 @media (max-width: 480px) {
+  /* 安全区域适配 */
+  body {
+    padding: 0;
+    background-color: var(--background-color);
+  }
+  
+  .container {
+    max-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+    padding-bottom: 70px; /* 为底部导航留出空间 */
+  }
+  
+  .app-header {
+    padding: calc(1.25rem + env(safe-area-inset-top)) 1rem 1.25rem;
+    border-radius: 0;
+  }
+  
   .app-title h1 {
     font-size: 1.5rem;
   }
@@ -752,15 +887,91 @@ body {
   .header-stats {
     flex-direction: column;
     align-items: center;
+    gap: 0.75rem;
   }
   
+  .stat-item {
+    min-width: 100%;
+    width: 100%;
+    max-width: 280px;
+    padding: 1rem;
+  }
+  
+  .stat-value {
+    font-size: 1.75rem;
+  }
+  
+  .main-content {
+    padding: 1rem;
+    flex: 1;
+  }
+  
+  /* 底部标签导航 - 现代移动设计 */
   .tabs {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.05);
+    padding: 0.5rem 0 0.75rem;
+    border-radius: 20px 20px 0 0;
+    z-index: 100;
+    margin-bottom: 0;
+  }
+  
+  .tab-button {
+    flex: 1;
+    padding: 0.625rem 0;
     flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    min-height: auto;
+    border-radius: 8px;
+    max-width: 80px;
+  }
+  
+  .tab-button i {
+    font-size: 1.25rem;
+  }
+  
+  .tab-button.active {
+    box-shadow: none;
+    background: transparent;
+  }
+  
+  .tab-button.active::after {
+    display: none;
+  }
+  
+  .tab-content {
+    margin-bottom: 70px;
+  }
+  
+  .card {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  .card-header {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
   }
   
   .date-selector {
     width: 100%;
     flex-direction: column;
+    align-items: stretch;
   }
   
   .date-selector .form-control {
@@ -774,12 +985,93 @@ body {
   
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1.5rem;
   }
   
   .notification {
+    top: calc(20px + env(safe-area-inset-top));
     right: 10px;
     left: 10px;
     max-width: none;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+  
+  .entries-container, .search-results-container {
+    max-height: 50vh;
+  }
+  
+  .entry-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .entry-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 0.75rem;
+  }
+  
+  .app-footer {
+    padding: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* 触摸反馈动画 */
+@keyframes buttonPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.btn:active, .tab-button:active, .stat-item:active {
+  animation: buttonPress 0.15s ease-in-out;
+}
+
+/* 适配iOS设备的滑动行为 */
+html {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 改进滚动体验 */
+.entries-container, .search-results-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-light) transparent;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+/* 针对不同屏幕方向的优化 */
+@media (max-height: 500px) and (orientation: landscape) {
+  .main-content {
+    padding: 0.75rem;
+  }
+  
+  .tabs {
+    padding: 0.375rem 0 0.5rem;
+  }
+  
+  .tab-button {
+    padding: 0.5rem 0;
+  }
+  
+  .tab-button i {
+    font-size: 1.125rem;
+  }
+  
+  .tab-button span {
+    display: none;
   }
 }
 
