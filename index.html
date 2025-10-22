@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英语学习日记 - Daily English</title>
+  <!-- 引入Font Awesome图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- 引入现代字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- 引入样式文件 -->
+  <link rel="stylesheet" href="e.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- 页面头部 -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="app-title">
+          <i class="fas fa-book"></i>
+          <h1>英语学习日记</h1>
+        </div>
+        <div class="header-stats">
+          <div class="stat-item">
+            <i class="fas fa-clipboard-list"></i>
+            <span class="stat-value" id="totalWords">0</span>
+            <span class="stat-label">总单词数</span>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-calendar-day"></i>
+            <span class="stat-value" id="currentDateWords">0</span>
+            <span class="stat-label">今日单词</span>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-calendar-check"></i>
+            <span class="stat-value" id="studyDays">0</span>
+            <span class="stat-label">学习天数</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+      <!-- 标签页导航 -->
+      <div class="tabs">
+        <button class="tab-button active" data-tab="add">
+          <i class="fas fa-plus"></i>
+          <span>添加单词</span>
+        </button>
+        <button class="tab-button" data-tab="view">
+          <i class="fas fa-list"></i>
+          <span>查看单词</span>
+        </button>
+        <button class="tab-button" data-tab="search">
+          <i class="fas fa-search"></i>
+          <span>搜索单词</span>
+        </button>
+        <button class="tab-button" data-tab="stats">
+          <i class="fas fa-chart-line"></i>
+          <span>学习统计</span>
+        </button>
+      </div>
+
+      <!-- 标签页内容 -->
+      <div class="tab-content">
+        <!-- 添加单词标签页 -->
+        <div class="tab-panel active" id="add">
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fas fa-plus-circle"></i> 添加新单词</h2>
+            </div>
+            <div class="card-body">
+              <form id="wordForm">
+                <div class="form-group">
+                  <label class="form-label" for="word">
+                    <i class="fas fa-language"></i> 英语单词
+                  </label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-keyboard input-icon"></i>
+                    <input type="text" class="form-control" id="word" placeholder="请输入单词（不能中文）" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="meaning">
+                    <i class="fas fa-book-open"></i> 中文意思
+                  </label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-comment input-icon"></i>
+                    <textarea class="form-control" id="meaning" rows="3" placeholder="请输入中文意思或笔记" required></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="date">
+                    <i class="fas fa-calendar-alt"></i> 日期
+                  </label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-calendar-day input-icon"></i>
+                    <input type="date" class="form-control" id="date" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  保存单词
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 查看记录标签页 -->
+        <div class="tab-panel" id="view">
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fas fa-list-alt"></i> 单词记录</h2>
+              <div class="date-selector">
+                <label for="viewDate">选择日期：</label>
+                <input type="date" class="form-control" id="viewDate">
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="entries-container" id="entriesList">
+                <!-- 单词条目将在这里动态生成 -->
+                <div style="text-align: center; color: var(--text-light); padding: 2rem;">
+                  <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                  暂无单词记录
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 搜索单词标签页 -->
+        <div class="tab-panel" id="search">
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fas fa-search"></i> 搜索单词</h2>
+            </div>
+            <div class="card-body">
+              <div class="search-container">
+                <div class="input-wrapper search-wrapper">
+                  <i class="fas fa-search input-icon"></i>
+                  <input type="text" class="form-control" id="searchInput" placeholder="搜索单词或中文意思">
+                  <i class="fas fa-times-circle input-icon" id="clearSearch"></i>
+                </div>
+                <button class="btn btn-primary" id="searchButton">
+                  <i class="fas fa-search"></i>
+                  搜索
+                </button>
+              </div>
+              <div class="search-results-container" id="searchResults">
+                <!-- 搜索结果将在这里动态生成 -->
+                <div style="text-align: center; color: var(--text-light); padding: 2rem;">
+                  <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                  输入关键词开始搜索
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 学习统计标签页 -->
+        <div class="tab-panel" id="stats">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-language"></i>
+              </div>
+              <div class="stat-number" id="statsTotalWords">0</div>
+              <div class="stat-label">词汇总量</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+              <div class="stat-number" id="statsStudyDays">0</div>
+              <div class="stat-label">学习天数</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-chart-pie"></i>
+              </div>
+              <div class="stat-number" id="statsDailyAverage">0</div>
+              <div class="stat-label">日均单词</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-fire"></i>
+              </div>
+              <div class="stat-number" id="statsMaxDay">0</div>
+              <div class="stat-label">最多一天</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <h3><i class="fas fa-chart-bar"></i> 学习趋势</h3>
+            <div class="chart-placeholder">
+              <div class="chart-skeleton"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 底部区域 -->
+    <footer class="app-footer">
+      <div class="actions">
+        <button class="btn btn-outline-primary" id="exportData">
+          <i class="fas fa-download"></i>
+          导出数据
+        </button>
+        <button class="btn btn-outline-secondary" id="importData">
+          <i class="fas fa-upload"></i>
+          导入数据
+        </button>
+        <input type="file" id="fileInput" accept=".json" style="display: none;">
+        <button class="btn btn-outline-secondary" id="clearAllData">
+          <i class="fas fa-trash-alt"></i>
+          清空数据
+        </button>
+      </div>
+      <div class="app-info">
+        <p>英语学习日记 &copy; Neo 2025 - 让每天的学习都有记录</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 通知组件 -->
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle" id="notificationIcon"></i>
+    <span id="notificationMessage"></span>
+  </div>
+
+  <input type="hidden" value="这是黄维亮创建的单词记录网站，时间：2025-10-22">
+
+  <!-- 引入JavaScript文件 -->
+  <script src="e.js"></script>
+</body>
+
+</html>
