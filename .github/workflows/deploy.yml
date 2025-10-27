@@ -4,6 +4,12 @@ on:
   push:
     branches: [ main ]  # 当推送到main分支时触发
 
+# 添加工作流权限
+permissions:
+  contents: write  # 允许写入仓库内容
+  pages: write     # 允许操作GitHub Pages
+  id-token: write  # 允许生成ID令牌用于身份验证
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -35,6 +41,8 @@ jobs:
           folder: dist  # 构建输出目录
           branch: gh-pages  # 部署到gh-pages分支
           clean: true  # 清理旧文件
+          # 使用GITHUB_TOKEN进行身份验证
+          token: ${{ secrets.GITHUB_TOKEN }}
           # 可选：指定自定义域名
           # target-folder: /  # 部署到根目录
           # git-config-name: GitHub Actions  # Git提交用户名
