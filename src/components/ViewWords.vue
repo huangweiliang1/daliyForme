@@ -238,7 +238,8 @@ export default {
         // 加载所有单词
         words.value = [...allWords]
         
-        // 不再默认设置为当天，让用户自己选择日期过滤
+        // 默认设置为当天，方便用户直接查看今天的单词
+        selectedDate.value = getTodayDateString()
         
         loading.value = false
       }, 500) // 模拟网络延迟
@@ -446,10 +447,8 @@ export default {
               localStorage.setItem('dailyEnglishWords', JSON.stringify(backupData.words))
               // 直接更新本地数据
               words.value = [...backupData.words]
-              // 重置搜索和筛选，显示所有导入的单词
-              searchQuery.value = ''
-              selectedDate.value = '' // 清空日期筛选
-              currentTag.value = ''
+              // 重置筛选，显示所有导入的单词
+              selectedDate.value = '' // 清空日期筛选，让用户看到所有导入的单词
             }
             
             // 导入日记数据
@@ -490,10 +489,8 @@ export default {
             // 保存合并后的数据
             localStorage.setItem('dailyEnglishWords', JSON.stringify(mergedWords))
             words.value = mergedWords
-            // 重置搜索和筛选，显示所有导入的单词
-            searchQuery.value = ''
-            selectedDate.value = '' // 清空日期筛选
-            currentTag.value = ''
+            // 重置筛选，显示所有导入的单词
+            selectedDate.value = '' // 清空日期筛选，让用户看到所有导入的单词
             
             ElMessage.success({
               message: `成功导入 ${newWordCount} 个新单词`,
