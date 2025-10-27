@@ -331,7 +331,7 @@ export default {
     const settings = ref({
       wordCount: 10,
       difficulty: '全部',
-      wordRange: 'today' // today, all
+      wordRange: 'all' // 默认显示所有单词，而不是仅今天的
     })
     
     // 练习结果

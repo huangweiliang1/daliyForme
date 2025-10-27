@@ -56,7 +56,7 @@
                   <el-date-picker
                     v-model="selectedDate"
                     type="date"
-                    placeholder="选择日期（清空查看所有）"
+                    placeholder="选择日期过滤（留空显示所有）"
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
                     clearable
@@ -284,7 +284,7 @@ export default {
     const words = ref([])
     const loading = ref(false)
     const searchQuery = ref('')
-    const selectedDate = ref(getTodayDateString()) // 存储选中的日期，默认为今天
+    const selectedDate = ref('') // 默认为空，显示所有单词
     const sortBy = ref('newest')
     const currentPage = ref(1)
     const pageSize = ref(10)
@@ -311,10 +311,7 @@ export default {
         // 加载所有单词
         words.value = [...allWords]
         
-        // 设置默认日期筛选为当天
-        if (!selectedDate.value) {
-          selectedDate.value = getTodayDateString()
-        }
+        // 不再默认设置为当天，让用户自己选择日期过滤
         
         loading.value = false
       }, 500) // 模拟网络延迟

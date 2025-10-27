@@ -41,6 +41,16 @@
             </el-card>
           </el-col>
           <el-col :xs="12" :sm="12" :md="6">
+            <el-card class="stat-card today-words gradient-card" shadow="hover" :class="{ 'stat-animate': isAnimated }">
+              <div class="stat-content">
+                <div class="stat-icon"><Sunny /></div>
+                <div class="stat-number">{{ stats.todayWords }}</div>
+                <div class="stat-label">今日单词</div>
+                <div class="stat-bg-icon"><Sunny /></div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :xs="12" :sm="12" :md="6">
             <el-card class="stat-card daily-target gradient-card" shadow="hover" :class="{ 'stat-animate': isAnimated }" @click="openTargetDialog">
               <div class="stat-content">
                 <div class="stat-icon"><Sunny /></div>
@@ -70,11 +80,14 @@
           </h3>
           <div class="trend-chart gradient-card">
             <div class="trend-bars">
-              <div v-for="day in trendData" :key="day.date" class="trend-bar-container">
-                <div class="trend-bar" :style="{ height: day.height + '%' }"></div>
-                <div class="trend-label">{{ day.label }}</div>
+                <div v-for="day in trendData" :key="day.date" class="trend-bar-container">
+                  <div class="trend-bar" :style="{ height: day.height + '%' }">
+                    <span class="trend-count">{{ day.count }}</span>
+                  </div>
+                  <div class="trend-label">{{ day.label }}</div>
+                  <div class="trend-date">{{ day.shortDate }}</div>
+                </div>
               </div>
-            </div>
           </div>
         </div>
         
@@ -93,7 +106,7 @@
               </div>
             </div>
             <div v-else class="empty-stats">
-              <p>今天还没有记录单词标签</p>
+              <p>暂无单词标签数据</p>
             </div>
           </div>
         </div>
@@ -232,20 +245,21 @@ export default {
       const masteredCount = allWords.filter(w => w.mastered).length;
       
       return {
-        totalWords: todayWords.length, // 今天的单词数
+        totalWords: allWords.length, // 总单词数（所有单词）
+        todayWords: todayWords.length, // 今天的单词数
         studyDays: studyDaysCount,     // 学习总天数
         dailyTarget: props.dailyTarget,
         mastered: masteredCount        // 所有已掌握的单词
       }
     })
     
-    // 生成过去7天的日期和标签
+    // 生成过去14天的日期和标签，显示更完整的趋势
     const generateLast7Days = () => {
       const days = [];
       const today = new Date();
       const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
       
-      for (let i = 6; i >= 0; i--) {
+      for (let i = 13; i >= 0; i--) {
         const date = new Date(today);
         date.setDate(date.getDate() - i);
         const dateStr = date.toISOString().split('T')[0];
@@ -255,7 +269,8 @@ export default {
           date: dateStr,
           count: 0, // 默认为0
           height: 0,
-          label: dayOfWeek
+          label: dayOfWeek,
+          shortDate: `${date.getMonth() + 1}/${date.getDate()}` // 显示月/日格式
         });
       }
       return days;
@@ -287,21 +302,17 @@ export default {
       return days;
     })
     
-    // 标签统计
+    // 标签统计 - 统计所有单词的标签分布，而不仅是今天的
     const tagStats = computed(() => {
       const tags = {};
-      const today = getTodayDateString();
       
       // 从localStorage获取所有单词数据
       const allWordsData = localStorage.getItem('dailyEnglishWords')
       const allWords = allWordsData ? JSON.parse(allWordsData) : []
       
-      // 只统计今天的标签
-      const todayWords = allWords.filter(w => w.date === today);
-      
-      // 统计今天的标签
-      todayWords.forEach(word => {
-        if (word.tags && Array.isArray(word.tags)) {
+      // 统计所有单词的标签
+      allWords.forEach(word => {
+        if (word.tags && word.tags.length > 0) {
           word.tags.forEach(tag => {
             tags[tag] = (tags[tag] || 0) + 1;
           });
@@ -589,7 +600,7 @@ export default {
 }
 
 .trend-chart, .tag-stats, .efficiency-stats {
-  padding: 16px;
+  padding: 20px;
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
 }
@@ -669,8 +680,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  height: 80px;
-  padding: 6px 0;
+  height: 200px;
+  padding: 20px 0;
 }
 
 .trend-bar-container {
@@ -678,26 +689,48 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 3px;
+  margin: 0 5px;
 }
 
 .trend-bar {
-  width: 16px;
+  width: 100%;
   background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
-  border-radius: 4px 4px 0 0;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
   min-height: 10px;
+}
+
+.trend-bar:hover {
+  background: linear-gradient(180deg, #66b1ff, #91ccff);
+  transform: scaleX(1.2);
+}
+
+.trend-count {
+  position: absolute;
+  top: -25px;
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .trend-label {
   text-align: center;
-  margin-top: 3px;
-  font-size: 8px;
+  margin-top: 8px;
+  font-size: 12px;
   color: var(--text-secondary);
   font-weight: 500;
+}
+
+.trend-date {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #909399;
+  text-align: center;
 }
 
 /* 标签统计样式 */
