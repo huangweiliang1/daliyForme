@@ -1022,8 +1022,16 @@ export default {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .add-word-container {
-    padding: var(--space-md);
+    padding: 10px;
     gap: var(--space-lg);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 100%;
   }
   
   .add-word-card .card-header h2,
@@ -1031,18 +1039,34 @@ export default {
     font-size: 1.3rem;
   }
   
+  .header-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .header-icon i {
+    font-size: 1rem;
+  }
+  
   .word-form {
-    padding: var(--space-md);
+    padding: 15px;
   }
   
   .form-section {
-    padding: var(--space-md);
-    margin-bottom: var(--space-lg);
+    padding: 15px;
+    margin-bottom: 20px;
+    gap: 10px;
+  }
+  
+  .section-title {
+    font-size: 1rem;
+    margin-bottom: 10px;
   }
   
   .form-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
   
   .action-btn {
@@ -1051,12 +1075,12 @@ export default {
   
   .quick-add-content {
     flex-direction: column;
-    gap: var(--space-md);
+    gap: 10px;
+    padding: 15px;
   }
   
   .quick-add-btn {
     width: 100%;
-    /* 移动端确保按钮文本完整显示 */
     white-space: normal;
     font-size: 0.9rem;
     padding: 10px 16px;
@@ -1064,12 +1088,55 @@ export default {
   
   .recent-words-list {
     justify-content: center;
+    gap: 6px;
+  }
+  
+  /* 优化表单元素在移动端的显示 */
+  .el-form {
+    label-width: 80px;
+  }
+  
+  .el-form-item {
+    margin-bottom: 15px;
+  }
+  
+  .el-input__inner,
+  .el-select__wrapper {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+  
+  .form-textarea {
+    min-height: 120px;
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+  
+  .form-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+  
+  .form-actions .el-button {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  /* 优化背景装饰在移动端的显示 */
+  .bg-circle {
+    filter: blur(60px);
+  }
+  
+  .bg-circle-1,
+  .bg-circle-2 {
+    width: 300px;
+    height: 300px;
   }
 }
 
 @media (max-width: 480px) {
   .add-word-container {
-    padding: var(--space-sm);
+    padding: 8px;
   }
   
   .word-form {
@@ -1086,6 +1153,106 @@ export default {
   
   .recent-words {
     padding: 0 var(--space-sm) var(--space-sm);
+  }
+}
+
+/* 超小屏幕适配（375px以下） */
+@media (max-width: 375px) {
+  .add-word-container {
+    padding: 5px;
+  }
+  
+  .gradient-text {
+    font-size: 1.2rem;
+  }
+  
+  .card-header {
+    gap: 8px;
+  }
+  
+  .header-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .add-word-card {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+  }
+  
+  .section-title {
+    font-size: 0.9rem;
+    padding-left: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .el-form {
+    label-width: 70px;
+  }
+  
+  .word-form .el-form-item__label {
+    font-size: 12px;
+    padding: 0 0 5px 0;
+    height: auto;
+    line-height: 1.4;
+  }
+  
+  .el-input__wrapper {
+    padding: 3px 8px;
+  }
+  
+  .el-input__inner {
+    font-size: 13px;
+  }
+  
+  .form-textarea {
+    min-height: 100px;
+    font-size: 13px;
+  }
+  
+  .form-actions .el-button {
+    padding: 8px;
+    font-size: 13px;
+  }
+  
+  /* 确保输入框在极小屏幕上不会溢出 */
+  .el-form-item {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  /* 优化标签在小屏幕的显示 */
+  .el-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+}
+
+/* 极小屏适配 (320px以下) */
+@media (max-width: 320px) {
+  .gradient-text {
+    font-size: 1.1rem;
+  }
+  
+  .el-form {
+    label-width: 60px;
+  }
+  
+  .el-form-item__label {
+    font-size: 11px;
+  }
+  
+  .form-actions .el-button {
+    padding: 7px 14px;
+    font-size: 0.85rem;
+  }
+  
+  .form-section {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
   }
 }
 

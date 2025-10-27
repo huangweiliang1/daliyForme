@@ -439,4 +439,129 @@ export default {
   font-size: 16px;
   color: var(--text-primary);
 }
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .diary-container {
+    padding: 10px;
+  }
+  
+  .diary-header h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .diary-date-selector {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .diary-date-selector .el-button {
+    width: 100%;
+  }
+  
+  .diary-content {
+    gap: 15px;
+  }
+  
+  .diary-title-input {
+    margin-bottom: 10px;
+  }
+  
+  .diary-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .diary-footer .el-button {
+    width: 100%;
+  }
+  
+  .diary-detail-dialog {
+    width: 95% !important;
+    margin: 10px;
+  }
+  
+  /* 小屏手机专用优化 */
+  .diary-item {
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  
+  .diary-item-title {
+    font-size: 16px;
+  }
+  
+  .search-input {
+    margin-bottom: 15px;
+  }
+  
+  .diary-stats {
+    font-size: 14px;
+  }
+}
+
+/* 超小屏幕适配（375px以下） */
+@media (max-width: 375px) {
+  .diary-container {
+    padding: 8px;
+  }
+  
+  .diary-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .el-tabs__nav {
+    width: 100%;
+  }
+  
+  .el-tabs__item {
+    padding: 0 10px;
+    font-size: 14px;
+  }
+  
+  .diary-content {
+    gap: 10px;
+  }
+  
+  .el-textarea {
+    width: 100%;
+  }
+  
+  .el-textarea__inner {
+    min-height: 200px;
+    font-size: 14px;
+  }
+  
+  .diary-stats {
+    font-size: 13px;
+    padding: 10px;
+  }
+  
+  .diary-item {
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+  
+  .diary-item-title {
+    font-size: 15px;
+  }
+  
+  .diary-item-date {
+    font-size: 12px;
+  }
+  
+  .diary-item-preview {
+    font-size: 13px;
+  }
+  
+  .diary-detail-dialog {
+    width: 98% !important;
+    margin: 5px;
+  }
+  
+  .diary-detail-content {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
 </style>

@@ -1038,37 +1038,304 @@ export default {
   transition: transform var(--transition-normal) var(--ease-out);
 }
 
-/* 响应式调整 */
+/* 响应式设计 */
 @media (max-width: 768px) {
-  .card-header {
+  .container {
+    padding: 10px;
+  }
+  
+  .filter-section {
+    padding: 15px;
+    gap: 15px;
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+  
+  .filter-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .filter-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .filter-group > div {
+    width: 100%;
+  }
+  
+  .date-picker,
+  .sort-select {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  .word-cards {
+    gap: 10px;
+  }
+  
+  .word-card {
+    padding: 12px;
+    min-height: auto;
+  }
+  
+  .word-text {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+  }
+  
+  .word-info {
+    gap: 8px;
+  }
+  
+  .word-phonetic {
+    font-size: 0.9rem;
+  }
+  
+  .word-meaning {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .word-example {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+  
+  .word-tags {
+    gap: 6px;
+  }
+  
+  .word-tags .el-tag {
+    font-size: 12px;
+    padding: 2px 8px;
+  }
+  
+  .card-footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
   
-  .word-header {
+  .action-buttons {
+    gap: 6px;
+  }
+  
+  .action-btn {
+    min-width: 36px;
+    height: 36px;
+    font-size: 12px;
+    padding: 0 8px;
+  }
+  
+  .current-date-info {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 5px;
+    font-size: 12px;
   }
   
-  .word-actions {
+  .empty-state {
+    padding: 40px 20px;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.2rem;
+  }
+  
+  /* 优化分页组件在小屏幕的显示 */
+  .pagination-container {
+    padding: 10px;
+  }
+  
+  .el-pagination {
+    font-size: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .el-pagination .btn-prev, 
+  .el-pagination .btn-next {
+    min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+  }
+  
+  .el-pagination .el-pager li {
+    min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+  }
+  
+  .el-pagination__sizes {
+    margin-right: 5px;
+    margin-bottom: 10px;
+  }
+  
+  /* 修复对话框在小屏幕的宽度 */
+  .delete-dialog {
+    width: 90% !important;
+    margin: 20px;
+  }
+  
+  /* 优化导入导出按钮在移动端的显示 */
+  .import-export-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .import-export-actions button {
     width: 100%;
-    justify-content: flex-end;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+/* 小屏手机专用优化 (375px以下) */
+@media (max-width: 375px) {
+  .container {
+    padding: 5px;
   }
   
-  .bg-circle-1 {
-    width: 300px;
-    height: 300px;
-    top: -150px;
-    right: -150px;
+  .section-title {
+    font-size: 1.2rem;
   }
   
-  .bg-circle-2 {
-    width: 200px;
-    height: 200px;
-    bottom: -100px;
-    left: -100px;
+  .filter-section {
+    padding: 10px;
+    gap: 12px;
+  }
+  
+  .filter-group {
+    gap: 8px;
+  }
+  
+  .date-picker,
+  .sort-select {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .word-card {
+    padding: 10px;
+  }
+  
+  .word-text {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+  }
+  
+  .word-phonetic {
+    font-size: 0.85rem;
+  }
+  
+  .word-meaning {
+    font-size: 0.85rem;
+  }
+  
+  .word-example {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+  
+  .word-tags .el-tag {
+    font-size: 11px;
+    padding: 1px 6px;
+  }
+  
+  .action-btn {
+    min-width: 32px;
+    height: 32px;
+    font-size: 11px;
+    padding: 0 6px;
+  }
+  
+  .pagination-container {
+    padding: 5px;
+  }
+  
+  .el-pagination {
+    font-size: 11px;
+  }
+  
+  .el-pagination .btn-prev, 
+  .el-pagination .btn-next {
+    min-width: 24px;
+    height: 24px;
+    line-height: 24px;
+  }
+  
+  .el-pagination .el-pager li {
+    min-width: 24px;
+    height: 24px;
+    line-height: 24px;
+  }
+  
+  .empty-state {
+    padding: 30px 15px;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.1rem;
+  }
+  
+  .empty-state p {
+    font-size: 0.9rem;
+  }
+  
+  /* 修复对话框在小屏幕的宽度 */
+  .delete-dialog {
+    width: 95% !important;
+    margin: 10px;
+  }
+}
+
+/* 极小屏适配 (320px以下) */
+@media (max-width: 320px) {
+  .container {
+    padding: 4px;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+  }
+  
+  .filter-section {
+    padding: 8px;
+  }
+  
+  .word-card {
+    padding: 8px;
+  }
+  
+  .word-text {
+    font-size: 1rem;
+  }
+  
+  .word-phonetic,
+  .word-meaning {
+    font-size: 0.8rem;
+  }
+  
+  .word-example {
+    font-size: 0.75rem;
+    padding: 5px;
+  }
+  
+  .action-btn {
+    min-width: 28px;
+    height: 28px;
+    font-size: 10px;
+    padding: 0 4px;
+  }
+  
+  .import-export-actions button {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 }
 </style>

@@ -192,7 +192,8 @@
           >清空数据</el-button>
         </el-button-group>
         <div class="app-info">
-          © 2023 英语学习日记 | 让学习更有效率
+          © 2025 NeoH 英语学习日记 | 让学习更有效率
+          <input type="hidden" value="2025-10-27 黄维亮" id="app-start-date">
         </div>
       </div>
     </main>
@@ -1142,69 +1143,69 @@ export default {
 }
 
 /* 移动端导航栏样式增强 */
-.mobile-nav {
-  background: var(--background-card);
-  box-shadow: var(--shadow-lg);
-  border-top-left-radius: var(--radius-xl);
-  border-top-right-radius: var(--radius-xl);
-  margin-bottom: 0;
-  padding: 10px 0 20px 0;
-  position: sticky;
-  bottom: 0;
-  z-index: 100;
-}
-
-.mobile-nav-item {
-  transition: all var(--transition-normal) var(--ease-bounce);
-  padding: 8px 0;
-  position: relative;
-}
-
-.mobile-nav-item.active {
-  transform: translateY(-5px);
-}
-
-.nav-icon-wrapper {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 4px;
-  border-radius: 50%;
-  background: rgba(67, 97, 238, 0.1);
-  transition: all var(--transition-normal) ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-icon-wrapper::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: rotate(45deg);
-  transition: transform var(--transition-normal) ease;
-}
-
-.mobile-nav-item:hover .nav-icon-wrapper::before {
-  transform: rotate(45deg) translateX(100%);
-}
-
-.mobile-nav-item.active .nav-icon-wrapper {
-  background: var(--gradient-primary);
-  color: white;
-  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-  transform: scale(1.1);
-}
-
-.mobile-nav-icon {
-  font-size: 22px;
-  transition: all var(--transition-normal) ease;
-}
+  .mobile-nav {
+    background: var(--background-card);
+    box-shadow: var(--shadow-lg);
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+    margin-bottom: 0;
+    padding: 10px 0 20px 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+  }
+  
+  .mobile-nav-item {
+    transition: all var(--transition-normal) var(--ease-bounce);
+    padding: 8px 0;
+    position: relative;
+  }
+  
+  .mobile-nav-item.active {
+    transform: translateY(-5px);
+  }
+  
+  .nav-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    border-radius: 50%;
+    background: rgba(67, 97, 238, 0.1);
+    transition: all var(--transition-normal) ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nav-icon-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    transition: transform var(--transition-normal) ease;
+  }
+  
+  .mobile-nav-item:hover .nav-icon-wrapper::before {
+    transform: rotate(45deg) translateX(100%);
+  }
+  
+  .mobile-nav-item.active .nav-icon-wrapper {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+    transform: scale(1.1);
+  }
+  
+  .mobile-nav-icon {
+    font-size: 22px;
+    transition: all var(--transition-normal) ease;
+  }
 
 .mobile-nav-item.active .mobile-nav-icon {
   transform: scale(1.1);
@@ -1348,6 +1349,339 @@ export default {
     margin: 4px;
     padding: 8px 16px;
   }
+  
+  /* 小屏手机专用优化 */
+  .mobile-nav {
+    padding: 5px 0;
+    height: auto;
+  }
+  
+  .mobile-nav-item {
+    padding: 8px 0;
+  }
+  
+  .mobile-nav-icon {
+    font-size: 20px;
+  }
+  
+  .mobile-nav-item span {
+    font-size: 10px;
+  }
+  
+  .mobile-page-title {
+    font-size: 1.25rem;
+    padding: 10px 16px;
+  }
+  
+  .mobile-content {
+    padding: 10px;
+  }
+  
+  /* 优化统计卡片在小屏幕的显示 */
+  .stat-item {
+    min-width: 80px;
+    padding: 8px;
+  }
+  
+  .stat-value {
+    font-size: 1.3rem;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+  }
+  
+  /* 优化移动端操作按钮 */
+  .mobile-action-btn {
+    font-size: 11px;
+    padding: 6px 5px;
+    min-width: 70px;
+  }
+  
+  .mobile-actions-below-add .el-button-group {
+    gap: 3px;
+  }
+}
+
+/* 优化统计数据显示，根据屏幕尺寸调整网格布局 */
+
+/* 基础样式：默认两列网格布局（所有屏幕尺寸） */
+.stats-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat-item {
+  min-width: auto;
+  width: 100%;
+  padding: 8px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* 超小屏幕适配（375px以下） */
+@media (max-width: 375px) {
+  /* 定义关键CSS变量以避免引用未定义变量的错误 */
+  :root {
+    --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    --radius-xl: 1rem;
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --background-card: #ffffff;
+  }
+  
+  .app-header-card {
+    margin: 5px;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  
+  .app-title h1 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .header-content {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  /* 超小屏手机（320px-375px）：保持两列布局，调整间距 */
+  .stats-container {
+    gap: 6px;
+  }
+  
+  .stat-item {
+    padding: 5px;
+  }
+}
+
+/* 小屏手机（375px-480px）：两列布局，调整间距 */
+@media (max-width: 480px) {
+  .stats-container {
+    gap: 8px;
+  }
+  
+  .stat-item {
+    padding: 6px;
+  }
+}
+
+/* 极小屏手机（<320px）：单列布局，确保显示完整 */
+@media (max-width: 320px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  
+  .stat-item {
+    padding: 4px;
+  }
+}
+
+.stat-icon i {
+  font-size: 16px;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+}
+
+/* 优化导航布局 */
+.nav-section {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-nav-icon {
+  font-size: 16px;
+}
+
+.mobile-nav-item {
+  padding: 8px 0;
+  min-height: auto;
+}
+
+.mobile-nav-item span {
+  font-size: 10px;
+}
+
+.mobile-page-title {
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.mobile-content {
+  padding: 8px;
+  gap: 10px;
+}
+
+/* 优化操作按钮 */
+.mobile-action-btn {
+  font-size: 11px;
+  padding: 6px 8px;
+  min-width: 70px;
+}
+
+.mobile-actions-below-add .el-button-group {
+  gap: 5px;
+}
+
+/* 优化底部导航栏 */
+.mobile-nav {
+  padding: 5px 0;
+}
+
+/* 优化导入导出按钮 */
+.import-export-actions {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.import-export-actions button {
+    font-size: 12px;
+    padding: 8px;
+    width: 100%;
+  }
+  
+  /* 优化操作区域 */
+  .word-actions,
+  .diary-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .action-card {
+    padding: 12px;
+  }
+  
+  .action-title {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  /* 优化提示对话框 */
+  .el-message-box {
+    width: 90% !important;
+    margin: 10px;
+  }
+  
+  .el-message-box__title {
+    font-size: 1rem;
+  }
+  
+  .el-message-box__content {
+    font-size: 0.9rem;
+  }
+  
+  .el-message-box__btns {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .el-message-box__btns button {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+
+/* 极小屏适配（320px以下） */
+@media (max-width: 320px) {
+  .app-header-card {
+    margin: 3px;
+    padding: 8px;
+    border-radius: 6px;
+  }
+  
+  .app-title h1 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  
+  .header-content {
+    padding: 8px;
+  }
+  
+  .stat-icon i {
+    font-size: 14px;
+  }
+  
+  .stat-value {
+    font-size: 0.9rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .mobile-nav-icon {
+    font-size: 14px;
+  }
+  
+  .mobile-nav-item {
+    padding: 6px 0;
+  }
+  
+  .mobile-nav-item span {
+    font-size: 9px;
+  }
+  
+  .mobile-page-title {
+    font-size: 1rem;
+    padding: 6px 10px;
+  }
+  
+  .mobile-content {
+    padding: 6px;
+  }
+  
+  .mobile-action-btn {
+    font-size: 10px;
+    padding: 5px 6px;
+    min-width: 60px;
+  }
+  
+  .action-card {
+    padding: 10px;
+  }
+  
+  .action-title {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  
+  .action-description {
+    font-size: 0.8rem;
+  }
+  
+  .import-export-actions button {
+    font-size: 11px;
+    padding: 7px;
+  }
+  
+  /* 确保滚动条在极小屏幕上正常工作 */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+  }
 }
 
 /* 平板设备响应式 */
@@ -1360,4 +1694,4 @@ export default {
     min-width: 100px;
   }
 }
-  </style>
+</style>

@@ -1416,26 +1416,111 @@ h2 {
 @media (max-width: 768px) {
   .practice-words {
     padding: 15px;
+    min-height: 100vh;
+  }
+  
+  .practice-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .back-button {
+    align-self: flex-start;
+    position: static;
+    margin-bottom: 10px;
+  }
+  
+  .practice-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .mode-selection h2,
+  .practice-settings h2 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+  
+  .back-btn {
+    padding: 8px 16px;
+    font-size: 14px;
   }
   
   .mode-cards {
     grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .mode-card {
+    padding: 20px;
+    min-height: auto;
+  }
+  
+  .mode-card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+  
+  .settings-group {
+    margin-bottom: 15px;
+  }
+  
+  .settings-group label {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .settings-group input,
+  .settings-group select {
+    padding: 8px 12px;
+    font-size: 14px;
   }
   
   .settings-actions {
     flex-direction: column;
+    gap: 10px;
+  }
+  
+  .back-btn,
+  .start-btn {
+    width: 100%;
+    padding: 12px;
+  }
+  
+  .start-btn {
+    font-size: 16px;
   }
   
   .flashcard {
-    height: 250px;
+    height: 280px;
+    width: 95%;
+    margin: 0 auto 20px;
   }
   
   .card-front h3 {
-    font-size: 28px;
+    font-size: 24px;
+  }
+  
+  .card-front p {
+    font-size: 16px;
   }
   
   .card-back .definition {
-    font-size: 20px;
+    font-size: 18px;
+  }
+  
+  .card-back .example {
+    font-size: 14px;
+  }
+  
+  .progress-container {
+    margin: 20px 0;
+  }
+  
+  .progress-bar {
+    height: 6px;
   }
   
   .flashcard-actions,
@@ -1443,10 +1528,192 @@ h2 {
   .result-actions {
     flex-direction: column;
     width: 100%;
+    gap: 10px;
   }
   
   .options {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .option-btn {
+    padding: 15px;
+    font-size: 15px;
+  }
+  
+  .result-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .stat-number {
+    font-size: 28px;
+  }
+  
+  /* 小屏手机专用优化 */
+  .loading-container {
+    padding: 40px 20px;
+  }
+  
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* 小屏手机专用优化 (375px以下) */
+@media (max-width: 375px) {
+  .practice-words {
+    padding: 10px;
+  }
+  
+  .practice-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .back-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .mode-card {
+    padding: 15px;
+  }
+  
+  .mode-card i {
+    font-size: 1.5rem;
+  }
+  
+  .mode-card h3 {
+    font-size: 1.1rem;
+    margin: 8px 0;
+  }
+  
+  .mode-card p {
+    font-size: 13px;
+  }
+  
+  .settings-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .settings-group input,
+  .settings-group select {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .radio-group label {
+    font-size: 13px;
+  }
+  
+  .flashcard {
+    height: 250px;
+    width: 98%;
+  }
+  
+  .card-front h3 {
+    font-size: 20px;
+  }
+  
+  .card-front p {
+    font-size: 14px;
+  }
+  
+  .card-back .definition {
+    font-size: 16px;
+  }
+  
+  .card-back p {
+    font-size: 13px;
+  }
+  
+  .option-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .progress-container {
+    margin: 15px 0;
+    font-size: 14px;
+  }
+  
+  .result-card h3 {
+    font-size: 1.3rem;
+  }
+  
+  .stat-number {
+    font-size: 24px;
+  }
+  
+  .stat-label {
+    font-size: 13px;
+  }
+  
+  .result-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .play-audio-btn {
+    font-size: 16px;
+    padding: 12px 24px;
+  }
+}
+
+/* 极小屏适配 (320px以下) */
+@media (max-width: 320px) {
+  .practice-words {
+    padding: 8px;
+  }
+  
+  .practice-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .back-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .mode-card {
+    padding: 10px;
+    min-height: 90px;
+  }
+  
+  .flashcard {
+    height: 220px;
+    margin: 10px auto;
+  }
+  
+  .card-front h3 {
+    font-size: 18px;
+  }
+  
+  .card-back .definition {
+    font-size: 15px;
+  }
+  
+  .option-btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+  
+  .settings-group input,
+  .settings-group select {
+    font-size: 13px;
+    padding: 8px;
+  }
+  
+  .result-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .play-audio-btn {
+    font-size: 14px;
+    padding: 10px 20px;
   }
 }
 </style>
