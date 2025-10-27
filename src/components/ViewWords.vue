@@ -19,13 +19,13 @@
         <el-button 
           type="primary" 
           class="search-btn"
-          @click="showAllWords"
+          @click="resetDate"
         >
-          <i class="fas fa-sync-alt mr-1"></i>重置筛选
+          <i class="fas fa-calendar-alt mr-1"></i>今天
         </el-button>
       </div>
 
-      <!-- 搜索和筛选区域 -->
+      <!-- 日期筛选区域 -->
       <el-card class="mb-6 gradient-card" :class="{ 'card-loaded': !loading }">
         <div class="current-date-info" v-if="selectedDate">
           <span>当前显示: {{ selectedDate }} 的单词记录</span>
@@ -36,21 +36,6 @@
         <div class="filter-section p-4">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="12" :md="8">
-              <div class="relative">
-                <el-input
-                  v-model="searchQuery"
-                  placeholder="搜索单词或释义"
-                  prefix-icon="el-icon-search"
-                  clearable
-                  @input="handleSearch"
-                  class="search-input"
-                ></el-input>
-                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400">
-                  <i class="fas fa-search"></i>
-                </div>
-              </div>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8">
               <div class="date-picker-wrapper">
                 <div class="search-wrapper">
                   <el-date-picker
@@ -60,7 +45,7 @@
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
                     clearable
-                    @change="handleSearch"
+                    @change="handleDateFilter"
                     class="date-picker w-full"
                   >
                   </el-date-picker>
@@ -72,7 +57,7 @@
                 v-model="sortBy"
                 placeholder="排序方式"
                 class="sort-select w-full"
-                @change="handleSearch"
+                @change="handleSort"
               >
                 <el-option label="添加时间 (新到旧)" value="newest"></el-option>
                 <el-option label="添加时间 (旧到新)" value="oldest"></el-option>
@@ -81,21 +66,6 @@
               </el-select>
             </el-col>
           </el-row>
-
-          <!-- 热门标签 -->
-          <div v-if="popularTags.length > 0" class="mt-4 tag-section">
-            <span class="text-gray-600 mr-2">热门标签：</span>
-            <el-tag
-              v-for="tag in popularTags"
-              :key="tag.name"
-              :class="{ 'active': currentTag === tag.name }"
-              @click="filterByTag(tag.name)"
-              class="cursor-pointer m-1"
-              effect="plain"
-            >
-              {{ tag.name }} ({{ tag.count }})
-            </el-tag>
-          </div>
         </div>
       </el-card>
 
@@ -211,20 +181,6 @@
 
       <!-- 注意：导入导出和清空数据功能已在全局界面底部提供 -->
       
-      <!-- 批量操作（只在有单词时显示） -->
-      <div v-if="!loading && filteredWords.length > 0" class="batch-actions mt-4 flex justify-end space-x-3">
-        <el-button
-          type="warning"
-          :plain="true"
-          @click="showBatchDeleteDialog"
-          :disabled="selectedWords.length === 0"
-          class="clear-btn"
-        >
-          <i class="fas fa-trash-alt mr-1"></i>
-          批量删除 ({{ selectedWords.length }})
-        </el-button>
-      </div>
-
       <!-- 删除确认对话框 -->
       <el-dialog
         v-model="deleteDialogVisible"
@@ -240,25 +196,6 @@
           <span class="dialog-footer">
             <el-button @click="deleteDialogVisible = false" class="clear-btn">取消</el-button>
             <el-button type="danger" @click="deleteWord" class="search-btn">确定</el-button>
-          </span>
-        </template>
-      </el-dialog>
-
-      <!-- 批量删除确认对话框 -->
-      <el-dialog
-        v-model="batchDeleteDialogVisible"
-        title="批量删除"
-        width="30%"
-        class="delete-dialog"
-        destroy-on-close
-        append-to-body
-        lock-scroll=false
-      >
-        <p class="text-red-600">确定要删除选中的 {{ selectedWords.length }} 个单词吗？</p>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="batchDeleteDialogVisible = false" class="clear-btn">取消</el-button>
-            <el-button type="danger" @click="batchDeleteWords" class="search-btn">确定</el-button>
           </span>
         </template>
       </el-dialog>
@@ -283,23 +220,13 @@ export default {
     // 响应式数据
     const words = ref([])
     const loading = ref(false)
-    const searchQuery = ref('')
     const selectedDate = ref('') // 默认为空，显示所有单词
     const sortBy = ref('newest')
     const currentPage = ref(1)
     const pageSize = ref(10)
     const deleteDialogVisible = ref(false)
-    
-    // 日期过滤函数
-    const dateFilter = (word) => {
-      return word.date === selectedDate.value
-    }
-    const batchDeleteDialogVisible = ref(false)
     const currentWordToDelete = ref(null)
-    const selectedWords = ref([])
-    const currentTag = ref('')
     const deleting = ref(false)
-    const fileInput = ref(null) // 文件输入引用
     
     // 加载单词数据
     const loadWords = () => {
@@ -331,25 +258,9 @@ export default {
       // 使用本地响应式数据，而不是直接从localStorage读取
       let result = [...words.value]
       
-      // 搜索过滤
-      if (searchQuery.value) {
-        const query = searchQuery.value.toLowerCase()
-        result = result.filter(word => 
-          word.word.toLowerCase().includes(query) || 
-          word.meaning.toLowerCase().includes(query)
-        )
-      }
-      
       // 日期过滤 - 只有当selectedDate有值时才进行过滤
       if (selectedDate.value) {
         result = result.filter(word => word.date === selectedDate.value)
-      }
-      
-      // 标签过滤
-      if (currentTag.value) {
-        result = result.filter(word => 
-          word.tags && word.tags.includes(currentTag.value)
-        )
       }
       
       // 排序
@@ -378,22 +289,7 @@ export default {
       return filteredWords.value.slice(start, end)
     })
     
-    // 计算热门标签
-    const popularTags = computed(() => {
-      const tagCounts = {}
-      words.value.forEach(word => {
-        if (word.tags && word.tags.length > 0) {
-          word.tags.forEach(tag => {
-            tagCounts[tag] = (tagCounts[tag] || 0) + 1
-          })
-        }
-      })
-      
-      return Object.entries(tagCounts)
-        .map(([name, count]) => ({ name, count }))
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 10)
-    })
+    // 移除热门标签计算，因为已不在UI中显示
     
     // 格式化日期
     const formatDate = (dateString) => {
@@ -402,8 +298,13 @@ export default {
       return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
     }
     
-    // 处理搜索
-    const handleSearch = () => {
+    // 处理日期筛选
+    const handleDateFilter = () => {
+      currentPage.value = 1
+    }
+    
+    // 处理排序变化
+    const handleSort = () => {
       currentPage.value = 1
     }
     
@@ -418,36 +319,10 @@ export default {
       currentPage.value = current
     }
     
-    // 重置筛选条件
-    const resetFilters = () => {
-      searchQuery.value = ''
-      selectedDate.value = getTodayDateString() // 重置为今天
-      sortBy.value = 'newest'
-      currentTag.value = ''
-      selectedWords.value = []
-      currentPage.value = 1
-    }
-    
     // 重置日期为今天
     const resetDate = () => {
       selectedDate.value = getTodayDateString()
-      handleSearch()
-    }
-    
-    // 显示所有单词
-    const showAllWords = () => {
-      resetFilters()
-    }
-    
-    // 按标签筛选
-    const filterByTag = (tag) => {
-      if (currentTag.value === tag) {
-        currentTag.value = ''
-      } else {
-        currentTag.value = tag
-      }
-      currentPage.value = 1
-      selectedWords.value = []
+      handleDateFilter()
     }
     
     // 确认删除单个单词
@@ -490,53 +365,9 @@ export default {
       }
     }
     
-    // 显示批量删除对话框
-    const showBatchDeleteDialog = () => {
-      batchDeleteDialogVisible.value = true
-    }
-    
-    // 批量删除单词
-    const batchDeleteWords = async () => {
-      if (selectedWords.value.length === 0) return
-      
-      deleting.value = true
-      
-      try {
-        // 模拟异步操作
-        await new Promise(resolve => setTimeout(resolve, 500))
-        
-        words.value = words.value.filter(word => !selectedWords.value.includes(word.id))
-        saveWords()
-        
-        ElMessage.success({
-          message: `成功删除 ${selectedWords.value.length} 个单词`,
-          duration: 2000
-        })
-        
-        // 清空选择并关闭对话框
-        selectedWords.value = []
-        batchDeleteDialogVisible.value = false
-        
-        // 如果当前页没有数据了，回到上一页
-        if (paginatedWords.value.length === 0 && currentPage.value > 1) {
-          currentPage.value--
-        }
-      } catch (error) {
-        console.error('删除单词失败:', error)
-        ElMessage.error('删除失败，请重试')
-      } finally {
-        deleting.value = false
-      }
-    }
-    
     // 编辑单词
     const editWord = (word) => {
       emit('edit-word', word)
-    }
-    
-    // 触发导入文件对话框
-    const triggerImport = () => {
-      fileInput.value?.click()
     }
     
     // 解析CSV文件
