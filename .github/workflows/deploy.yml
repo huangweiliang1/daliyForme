@@ -15,9 +15,9 @@ jobs:
 
       # 设置Node.js环境
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4  # 使用最新版本的setup-node action
         with:
-          node-version: '20'  # 使用Node.js 20版本，更接近本地的Node.js 22版本
+          node-version: '20'  # 使用Node.js 20版本
           cache: 'npm'  # 缓存npm依赖以加快构建速度
 
       # 安装依赖
