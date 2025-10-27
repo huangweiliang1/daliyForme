@@ -946,8 +946,9 @@ export default {
   border: none;
   color: white;
   transition: all var(--transition-normal) ease;
-  white-space: nowrap;
-  min-width: 120px;
+  /* 移除nowrap属性，允许文本在必要时换行 */
+  min-width: 100px;
+  font-size: 1rem;
 }
 
 .quick-add-btn:hover {
@@ -1055,6 +1056,10 @@ export default {
   
   .quick-add-btn {
     width: 100%;
+    /* 移动端确保按钮文本完整显示 */
+    white-space: normal;
+    font-size: 0.9rem;
+    padding: 10px 16px;
   }
   
   .recent-words-list {
