@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  # 当推送到main分支时触发
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 检出代码
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # 获取完整的提交历史
+
+      # 设置Node.js环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # 使用Node.js 16版本
+          cache: 'npm'  # 缓存npm依赖以加快构建速度
+
+      # 安装依赖
+      - name: Install dependencies
+        run: npm ci  # 使用ci命令确保依赖一致性
+
+      # 构建项目
+      - name: Build
+        run: npm run build  # 执行构建命令
+
+      # 部署到GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist  # 构建输出目录
+          branch: gh-pages  # 部署到gh-pages分支
+          clean: true  # 清理旧文件
+          # 可选：指定自定义域名
+          # target-folder: /  # 部署到根目录
+          # git-config-name: GitHub Actions  # Git提交用户名
+          # git-config-email: github-actions@github.com  # Git提交邮箱
