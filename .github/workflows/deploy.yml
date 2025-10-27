@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # 使用Node.js 16版本
+          node-version: '18'  # 使用Node.js 18版本以避免crypto兼容性问题
           cache: 'npm'  # 缓存npm依赖以加快构建速度
 
       # 安装依赖
